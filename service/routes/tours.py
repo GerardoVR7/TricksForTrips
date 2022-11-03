@@ -6,11 +6,24 @@ from cryptography.fernet import Fernet
 from schema.tours import Tours
 from models.tours import tours as tr
 
+from datetime import date
+
 tours = APIRouter()
 
 @tours.get("/tours")
 async def get_all_tours():
     return conn.execute(tr.select()).fetchall()
+
+@tours.get("/tours/avaliable/{place}/{date}")
+async def get_tours_validity(place : str, date : date):
+    #today = date.today()
+    print("fecha de hoy " + str(date))
+    res = conn.execute(tr.select().where(
+        tr.c.validity_start >= date,  tr.c.validity_start <= date, tr.c.place_name == place)).fetchall()
+    print("respuesta del back: " + str(res))
+    if res == None:
+        return HTTPException(status_code=404, detail="Item not found")
+    else: return res
 
 @tours.post("/tours/create")
 async def create_tours(new_tour: Tours):
