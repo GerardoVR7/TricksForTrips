@@ -27,7 +27,9 @@ async def create_tours(new_tour: Tours):
     "interest_points": new_tour.interest_points,
     "price": new_tour.price, 
     "min_number_people": new_tour.min_number_people,
-    "location": new_tour.location
+    "location": new_tour.location,
+    "validity_start": new_tour.validity_start,
+    "validity_end": new_tour.validity_end
     }
     result = conn.execute(tr.insert().values(new_tour))
     print(result.lastrowid)
