@@ -11,7 +11,6 @@ from routes.menus import menus_router
 from routes.dishes import dishes_router
 from routes.tourist import tourist_router
 from routes.tours_services import tours_services_router
-from routes.users import users_router
 
 app = FastAPI()
 
