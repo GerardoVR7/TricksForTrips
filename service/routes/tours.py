@@ -24,6 +24,14 @@ async def get_tours_validity(place : str, date : date):
         return HTTPException(status_code=404, detail="Item not found")
     else: return res
 
+
+@tours.get("/tours/{id}")
+async def search_by_city(id_city : int):
+    res = conn.execute(tr.select().where(tr.c.id == id_city)).first()
+    if res == None:
+        return HTTPException(status_code=404, detail="Item not found")
+    return res
+
 @tours.post("/tours/create")
 async def create_tours(new_tour: Tours):
     new_tour = {
