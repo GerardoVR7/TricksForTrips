@@ -2,6 +2,7 @@ import imp
 from operator import imod
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from .routes.mexico_cities import mexico_cities_router
 from .routes.activities import activities
 from .routes.agencies import agencies
 from .routes.tours import tours
@@ -11,7 +12,7 @@ from .routes.menus import menus_router
 from .routes.dishes import dishes_router
 from .routes.tourist import tourist_router
 from .routes.tours_services import tours_services_router
-from .routes.mexico_cities import mexico_cities_router
+
 app = FastAPI()
 
 origins = [
