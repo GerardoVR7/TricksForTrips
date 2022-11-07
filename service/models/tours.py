@@ -9,6 +9,7 @@ tours = Table(
     Column("id", Integer, primary_key=True, autoincrement=True),
     Column("id_agency", Integer, ForeignKey("agencies.id")),
     Column("id_activity", Integer, ForeignKey("activities.id")),
+    Column("id_city", Integer, ForeignKey("mexico_cities.id")),
     Column("place_name", String(100)),
     Column("description", String(255)),
     Column("capacity", Integer),
@@ -18,7 +19,6 @@ tours = Table(
     Column("interest_points", String(255)),
     Column("price", Float),
     Column("min_number_people", String(255)),
-    Column("location", String(255)),
     Column("validity_start", Date),
     Column("validity_end", Date)
 

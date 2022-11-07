@@ -6,6 +6,7 @@ agencies = Table(
     "agencies",
     meta,
     Column("id", Integer, primary_key=True, autoincrement=True),
+    Column("id_city", Integer, ForeignKey("mexico_cities.id")),
     Column("name", String(255)),
     Column("address", String(255)),
     Column("RFC", String(255)),
