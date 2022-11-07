@@ -11,7 +11,7 @@ from .routes.menus import menus_router
 from .routes.dishes import dishes_router
 from .routes.tourist import tourist_router
 from .routes.tours_services import tours_services_router
-
+from .routes.mexico_cities import mexico_cities_router
 app = FastAPI()
 
 origins = [
@@ -26,6 +26,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+app.include_router(mexico_cities_router)
 app.include_router(activities)
 app.include_router(agencies)
 app.include_router(tours)

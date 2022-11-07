@@ -8,6 +8,7 @@ class Tours (BaseModel):
     id: Optional[int]
     id_agency: int
     id_activity: int
+    id_city: int
     place_name: str
     description: str
     capacity: int
@@ -17,6 +18,5 @@ class Tours (BaseModel):
     interest_points: str
     price: float
     min_number_people: int
-    location: str
     validity_start: date
     validity_end: date

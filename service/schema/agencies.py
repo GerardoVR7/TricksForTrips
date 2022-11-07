@@ -3,6 +3,7 @@ from pydantic import BaseModel
 
 class Agencies (BaseModel):
     id: Optional[int]
+    id_city: int
     name: str
     address: str
     RFC: str

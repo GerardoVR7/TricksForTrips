@@ -12,10 +12,18 @@ agencies = APIRouter()
 async def get_all_agencies():
     return conn.execute(ag.select()).fetchall()
 
+@agencies.get("/agencies/{id}")
+async def search_by_city(id_city : int):
+    res = conn.execute(ag.select().where(ag.c.id == id_city)).first()
+    if res == None:
+        return HTTPException(status_code=404, detail="Item not found")
+    return res
+
 @agencies.post("/agencies/create")
 async def create_agency(new_agency: Agencies):
     new_agency = {
         "id": new_agency.id,
+        "id_city": new_agency.id_city,
         "name": new_agency.name,
         "address": new_agency.address,
         "RFC": new_agency.address,
