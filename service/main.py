@@ -2,6 +2,7 @@ import imp
 from operator import imod
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from routes.mexico_cities import mexico_cities_router
 from routes.activities import activities
 from routes.agencies import agencies
 from routes.tours import tours
@@ -27,6 +28,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+app.include_router(mexico_cities_router)
 app.include_router(activities)
 app.include_router(agencies)
 app.include_router(tours)

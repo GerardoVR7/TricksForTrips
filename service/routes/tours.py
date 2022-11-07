@@ -16,11 +16,10 @@ async def get_all_tours():
 
 @tours.get("/tours/avaliable/{place}/{date}")
 async def get_tours_validity(place : str, date : date):
-    #today = date.today()
-    print("fecha de hoy " + str(date))
+    #print("fecha de hoy " + str(date))
     res = conn.execute(tr.select().where(
         tr.c.validity_start >= date,  tr.c.validity_start <= date, tr.c.place_name == place)).fetchall()
-    print("respuesta del back: " + str(res))
+    #print("respuesta del back: " + str(res))
     if res == None:
         return HTTPException(status_code=404, detail="Item not found")
     else: return res
@@ -40,7 +39,7 @@ async def create_tours(new_tour: Tours):
     "interest_points": new_tour.interest_points,
     "price": new_tour.price, 
     "min_number_people": new_tour.min_number_people,
-    "location": new_tour.location,
+    "location": new_tour.id_city,
     "validity_start": new_tour.validity_start,
     "validity_end": new_tour.validity_end
     }
