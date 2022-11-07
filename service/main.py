@@ -36,7 +36,6 @@ app.include_router(type_dish_router)
 app.include_router(dishes_router)
 app.include_router(tourist_router)
 app.include_router(tours_services_router)
-app.include_router(users_router)
 
 @app.get("/")
 def read_root():
