@@ -1,7 +1,7 @@
 from pydantic import Json
 from sqlalchemy import Column, Float, Table, ForeignKey, Time, JSON, Date
 from sqlalchemy.sql.sqltypes import Integer, String
-from config.database import meta, engine
+from ..config.database import meta, engine
 
 tours = Table(
     "tours",

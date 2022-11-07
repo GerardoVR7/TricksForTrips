@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Float, Table, ForeignKey
 from sqlalchemy.sql.sqltypes import Integer, String
-from config.database import meta, engine
+from ..config.database import meta, engine
 
 dishes = Table(
     "dishes",

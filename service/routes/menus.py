@@ -1,9 +1,9 @@
 from fastapi import APIRouter, Response, HTTPException
-from config.database import conn
-from models.menus import menus
+from ..config.database import conn
+from ..models.menus import menus
 from starlette.status import HTTP_204_NO_CONTENT
 from cryptography.fernet import Fernet
-from schema.menus import Menus
+from ..schema.menus import Menus
 
 menus_router = APIRouter()
 

@@ -1,10 +1,10 @@
 from fastapi import APIRouter, Response, HTTPException
 
-from config.database import conn
-from models.type_dish import type_dish 
+from ..config.database import conn
+from ..models.type_dish import type_dish 
 from starlette.status import HTTP_204_NO_CONTENT
 from cryptography.fernet import Fernet
-from schema.type_dish import TypeDish
+from ..schema.type_dish import TypeDish
 
 type_dish_router = APIRouter()
 
