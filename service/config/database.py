@@ -1,8 +1,13 @@
 from sqlalchemy import create_engine, MetaData
+from dotenv import dotenv_values
 
-engine = create_engine("mysql+pymysql://admin:G7v3R2001@tricks4trips.ckn3utwh3nqz.us-east-1.rds.amazonaws.com:3306/tricksfortrips")
-#engine = create_engine("mysql+pymysql://gerardo:password@50.19.131.119:3306/pruebas")
-#engine = create_engine("mysql+pymysql://gerardo:G7v3R2001@localhost:3306/tricksfortrips")
+settings = dotenv_values('./venv/.env')
+user = settings['RDS_USER']
+password =  settings['RDS_PASSWORD']
+rds_link = settings['RDS_LINK']
+port = settings['RDS_PORT']
+database = settings['RDS_DB_NAME']
+
+engine = create_engine(f"mysql+pymysql://{user}:{password}@{rds_link}:{port}/{database}")
 meta = MetaData()
-
 conn = engine.connect()

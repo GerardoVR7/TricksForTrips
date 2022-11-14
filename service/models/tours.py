@@ -1,4 +1,3 @@
-from pydantic import Json
 from sqlalchemy import Column, Float, Table, ForeignKey, Time, JSON, Date
 from sqlalchemy.sql.sqltypes import Integer, String
 from config.database import meta, engine
@@ -20,8 +19,9 @@ tours = Table(
     Column("price", Float),
     Column("min_number_people", String(255)),
     Column("validity_start", Date),
-    Column("validity_end", Date)
-
+    Column("validity_end", Date),
+    Column("photo_name", String(100)),
+    Column("photo_url", String(100)),
 )
 
 meta.create_all(engine)

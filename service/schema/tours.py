@@ -20,3 +20,5 @@ class Tours (BaseModel):
     min_number_people: int
     validity_start: date
     validity_end: date
+    photo_name: Optional[str]
+    photo_url: Optional[str]
