@@ -16,7 +16,10 @@ async def get_all_mexico_cities():
 async def add_new_city(new_city : MexicoCities):
     new_city = {
         "id": new_city.id,
-        "name": new_city.name
+        "name": new_city.name,
+        "description": new_city.description,
+        "assessment": new_city.assessment,
+        "photo_url": new_city.photo_url
     }
     result = conn.execute(mexico_cities.insert().values(new_city))
     print(result.lastrowid)

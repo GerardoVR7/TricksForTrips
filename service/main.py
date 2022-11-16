@@ -6,6 +6,7 @@ from routes.activities import activities
 from routes.agencies import agencies
 from routes.tours import tours
 from routes.tours_services import tours_services_router
+from routes.files_service import files_router
 
 app = FastAPI()
 
@@ -26,6 +27,7 @@ app.include_router(activities)
 app.include_router(agencies)
 app.include_router(tours)
 app.include_router(tours_services_router)
+app.include_router(files_router)
 
 @app.get("/")
 def read_root():
