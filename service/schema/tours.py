@@ -9,6 +9,7 @@ class Tours (BaseModel):
     id_agency: int
     id_activity: int
     id_city: int
+    agency_name: str
     place_name: str
     description: str
     capacity: int

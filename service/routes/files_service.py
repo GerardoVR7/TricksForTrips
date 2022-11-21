@@ -6,11 +6,6 @@ import os
 
 files_router = APIRouter()
 
-# config = dotenv_values('./venv/.env.aws')
-# S3_BUCKET_NAME = config['S3_BUCKET_NAME']
-# AWS_ACCESS_KEY_ID = config['AWS_ACCESS_KEY_ID']
-# AWS_SECRET_ACCESS_KEY = config['AWS_SECRET_ACCESS_KEY']
-
 @files_router.post("/photos/upload", status_code=201)
 async def add_photo(file: UploadFile):
     print("Create endpoint hit!!")

@@ -9,6 +9,7 @@ tours = Table(
     Column("id_agency", Integer, ForeignKey("agencies.id")),
     Column("id_activity", Integer, ForeignKey("activities.id")),
     Column("id_city", Integer, ForeignKey("mexico_cities.id")),
+    Column("agency_name", String(50)),
     Column("place_name", String(100)),
     Column("description", String(255)),
     Column("capacity", Integer),

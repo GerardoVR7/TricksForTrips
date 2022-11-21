@@ -37,6 +37,7 @@ async def create_tours(new_tour: Tours):
     "id": new_tour.id,
     "id_agency": new_tour.id_agency,
     "id_activity": new_tour.id_activity,
+    "agency_name": new_tour.agency_name,
     "place_name": new_tour.place_name,
     "description": new_tour.description,
     "capacity": new_tour.capacity,
