@@ -24,3 +24,21 @@ async def add_new_city(new_city : MexicoCities):
     result = conn.execute(mexico_cities.insert().values(new_city))
     print(result.lastrowid)
     return conn.execute(mexico_cities.select().where(mexico_cities.c.id == result.lastrowid)).first()
+
+@mexico_cities_router.put("/mexico/cities/update/{id}")
+async def update_city(id: int, edit_mexico_city: MexicoCities):
+    conn.execute(mexico_cities.update().values(
+    name= edit_mexico_city.name,
+    description= edit_mexico_city.description,
+    assessment= edit_mexico_city.assessment,
+    photo_url= edit_mexico_city.photo_url
+        ).where(mexico_cities.c.id == id)
+    )
+    return conn.execute(mexico_cities.select().where(mexico_cities.c.id == id))
+
+@mexico_cities_router.delete("/mexico/cities/delete/{id}")
+async def delete_city(id:int):
+    res = conn.execute(mexico_cities.delete().where(mexico_cities.c.id == id))
+    if res == None:
+        return HTTPException(status_code=404, detail="Item not exist")
+    else: return Response(status_code=HTTP_204_NO_CONTENT)

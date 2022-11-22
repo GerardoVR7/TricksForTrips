@@ -1,5 +1,5 @@
 from unittest import result
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Response
 from ..config.database import conn
 from starlette.status import HTTP_204_NO_CONTENT
 from cryptography.fernet import Fernet
@@ -57,3 +57,38 @@ async def create_tours(new_tour: Tours):
     result = conn.execute(tr.insert().values(new_tour))
     print(result.lastrowid)
     return conn.execute(tr.select().where(tr.c.id == result.lastrowid)).first()
+
+
+@tours.put("/tours/update/{id}")
+async def update_tour(id: int, edit_tour :Tours):
+    conn.execute(
+        tr.update().values(
+            id_agency= edit_tour.id_agency,
+            id_activity= edit_tour.id_activity,
+            id_city= edit_tour.id_city,
+            agency_name= edit_tour.agency_name,
+            place_name=  edit_tour.place_name,
+            description=  edit_tour.description,
+            capacity= edit_tour.capacity,
+            inclued_services= edit_tour.included_services,
+            start_time= edit_tour.start_time,
+            return_time= edit_tour.return_time,
+            interest_points= edit_tour.interest_points,
+            price= edit_tour.price,
+            min_number_people= edit_tour.min_number_people,
+            validity_start= edit_tour.validity_start,
+            validity_end= edit_tour.validity_end,
+            photo_name= edit_tour.photo_name,
+            photo_url= edit_tour.photo_url
+            ).where(tr.c.id == id)
+        )
+
+    return conn.execute(tr.select().where(tr.c.id == id))
+
+@tours.delete("/tours/delete/{id}")
+async def delete_tour(id: int):
+    res = conn.execute(tr.delete().where(tr.c.id == id))
+    if res == None:
+        return HTTPException(status_code=404, detail="Item not exist")
+    else: return Response(status_code=HTTP_204_NO_CONTENT)
+    

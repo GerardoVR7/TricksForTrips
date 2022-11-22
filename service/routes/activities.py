@@ -25,3 +25,20 @@ async def create_activity(new_activity: Activities):
     print(result.lastrowid)
     return conn.execute(ac.select().where(ac.c.id == result.lastrowid)).first()
 
+@activities.put("/activities/update/{id}")
+async def update_activity(id:int, edit_activity: Activities):
+    conn.execute(ac.update().values(
+        name= edit_activity.name,
+        time= edit_activity.time,
+        price= edit_activity.price
+        ).where(ac.c.id == id)
+    )
+
+    return conn.execute(ac.select().where(ac.c.id == id))
+
+@activities.delete("/activities/delete/{id}")
+async def delete_activity(id: int):
+    res = conn.execute(ac.delete().where(ac.c.id == id))
+    if res == None:
+        return HTTPException(status_code=404, detail="Item not exist")
+    else: return Response(status_code=HTTP_204_NO_CONTENT)
