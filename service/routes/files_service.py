@@ -12,10 +12,10 @@ async def add_photo(file: UploadFile):
     print(file.content_type)
     # Upload file to AWS S3
     s3 = boto3.resource("s3",
-    aws_access_key_id="AKIAYEZIJR332LP3447M",
-    aws_secret_access_key="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"
+    aws_access_key_id=os.environ["AWS_ACCESS_KEY_ID"],
+    aws_secret_access_key=os.environ["AWS_SECRET_ACCESS_KEY"]
         )
-    S3_BUCKET_NAME = "tricks-4-trips"
+    S3_BUCKET_NAME = os.environ["S3_BUCKET_NAME"]
     bucket = s3.Bucket(S3_BUCKET_NAME)
 
     bucket.upload_fileobj(file.file, file.filename, ExtraArgs={"ACL": "public-read"})

@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Table
 from sqlalchemy.sql.sqltypes import Integer, String, JSON
-from config.database import meta, engine
+from ..config.database import meta, engine
 
 mexico_cities = Table(
     "mexico_cities",

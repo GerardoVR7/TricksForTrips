@@ -1,12 +1,12 @@
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from routes.mexico_cities import mexico_cities_router
-from routes.activities import activities
-from routes.agencies import agencies
-from routes.tours import tours
-from routes.tours_services import tours_services_router
-from routes.files_service import files_router
+from .routes.mexico_cities import mexico_cities_router
+from .routes.activities import activities
+from .routes.agencies import agencies
+from .routes.tours import tours
+from .routes.tours_services import tours_services_router
+from .routes.files_service import files_router
 
 app = FastAPI()
 
