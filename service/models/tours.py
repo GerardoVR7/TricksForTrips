@@ -22,7 +22,7 @@ tours = Table(
     Column("validity_start", Date),
     Column("validity_end", Date),
     Column("photo_name", String(100)),
-    Column("photo_url", String(100)),
+    Column("photo_url", String(255)),
 )
 
 meta.create_all(engine)
