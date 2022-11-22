@@ -1,8 +1,7 @@
 from sqlalchemy import create_engine, MetaData
-from dotenv import dotenv_values
 import os
 
-database = str (os.environ["RDS_URL"])
+database = str ("mysql+pymysql://admin:G7v3R2001@pruebas.ckn3utwh3nqz.us-east-1.rds.amazonaws.com:3306/tricksfortrips")
 engine = create_engine(database)
 meta = MetaData()
 conn = engine.connect()
