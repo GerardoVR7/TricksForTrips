@@ -1,11 +1,12 @@
 from unittest import result
-from fastapi import APIRouter, HTTPException, Response
+from fastapi import APIRouter, HTTPException, Response, Depends
 from ..config.database import conn
 from starlette.status import HTTP_204_NO_CONTENT
 from cryptography.fernet import Fernet
 from datetime import date
 from ..schema.tours import Tours
 from ..models.tours import tours as tr
+from ..auth.auth_bearer import JWTBearer
 
 tours = APIRouter()
 

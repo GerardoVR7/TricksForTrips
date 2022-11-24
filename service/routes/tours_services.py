@@ -1,18 +1,19 @@
 from unittest import result
-from fastapi import APIRouter, Response, HTTPException
+from fastapi import APIRouter, Response, HTTPException, Depends
 from ..config.database import conn
 from starlette.status import HTTP_204_NO_CONTENT
 from cryptography.fernet import Fernet
 from ..schema.tours_services import ToursServices
 from ..models.tours_serivices import tours_services
+from ..auth.auth_bearer import JWTBearer
 
 tours_services_router = APIRouter()
 
-@tours_services_router.get("/tours/services", tags=["Tours Services"])
+@tours_services_router.get("/tours/services")
 async def get_all_tours_services():
     return conn.execute(tours_services.select()).fetchall()
 
-@tours_services_router.post("/tours/services/new")
+@tours_services_router.post("/tours/services/new", dependencies=[Depends(JWTBearer())])
 async def create_tour_serivce(new_tour_service : ToursServices):
     new_tour_service = {
         "id": new_tour_service.id,

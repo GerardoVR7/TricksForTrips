@@ -1,7 +1,9 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Body, Depends
 from fastapi import UploadFile
 import boto3
 import os
+from ..auth.auth_handler import decodeJWT
+from ..auth.auth_bearer import JWTBearer
 
 files_router = APIRouter()
 

@@ -12,7 +12,7 @@ class Tours (BaseModel):
     place_name: str
     description: str
     capacity: int
-    included_services: Dict[str, str] = None
+    included_services: Dict[str, bool] = None
     start_time: time
     return_time: time
     interest_points: str
