@@ -20,6 +20,7 @@ pluggy==1.0.0
 py==1.11.0
 pycparser==2.21
 pydantic==1.9.1
+PyJWT==2.6.0
 PyMySQL==1.0.2
 pyparsing==3.0.9
 pytest==7.1.2
@@ -36,3 +37,4 @@ tomli==2.0.1
 typing_extensions==4.2.0
 urllib3==1.26.9
 uvicorn==0.18.1
+email-validator==1.1.2

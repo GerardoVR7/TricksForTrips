@@ -36,7 +36,6 @@ async def create_tours(new_tour: Tours):
     new_tour = {
     "id": new_tour.id,
     "id_agency": new_tour.id_agency,
-    "id_activity": new_tour.id_activity,
     "id_city":new_tour.id_city,
     "agency_name": new_tour.agency_name,
     "place_name": new_tour.place_name,
@@ -64,7 +63,6 @@ async def update_tour(id: int, edit_tour :Tours):
     conn.execute(
         tr.update().values(
             id_agency= edit_tour.id_agency,
-            id_activity= edit_tour.id_activity,
             id_city= edit_tour.id_city,
             agency_name= edit_tour.agency_name,
             place_name=  edit_tour.place_name,

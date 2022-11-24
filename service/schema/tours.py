@@ -7,7 +7,6 @@ from pydantic import BaseModel
 class Tours (BaseModel):
     id: Optional[int]
     id_agency: int
-    id_activity: int
     id_city: int
     agency_name: str
     place_name: str

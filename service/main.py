@@ -2,7 +2,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from .routes.mexico_cities import mexico_cities_router
-from .routes.activities import activities
 from .routes.tours import tours
 from .routes.tours_services import tours_services_router
 from .routes.files_service import files_router
@@ -22,7 +21,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 app.include_router(mexico_cities_router)
-app.include_router(activities)
 app.include_router(tours)
 app.include_router(tours_services_router)
 app.include_router(files_router)
