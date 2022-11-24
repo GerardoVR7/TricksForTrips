@@ -9,11 +9,11 @@ from ..models.tours import tours as tr
 
 tours = APIRouter()
 
-@tours.get("/tours")
+@tours.get("/tours", tags=["Tours"])
 async def get_all_tours():
     return conn.execute(tr.select()).fetchall()
 
-@tours.get("/tours/avaliable/{place}/{date}")
+@tours.get("/tours/avaliable/{place}/{date}", tags=["Tours"])
 async def get_tours_validity(place : str, date : date):
     #print("fecha de hoy " + str(date))
     res = conn.execute(tr.select().where(
@@ -23,14 +23,14 @@ async def get_tours_validity(place : str, date : date):
         return HTTPException(status_code=404, detail="Item not found")
     else: return res
 
-@tours.get("/tours/{id}")
+@tours.get("/tours/{id}", tags=["Tours"])
 async def search_by_city(id_city : int):
     res = conn.execute(tr.select().where(tr.c.id == id_city)).first()
     if res == None:
         return HTTPException(status_code=404, detail="Item not found")
     return res
 
-@tours.post("/tours/create")
+@tours.post("/tours/create", tags=["Tours"])
 async def create_tours(new_tour: Tours):
 
     new_tour = {
@@ -58,7 +58,7 @@ async def create_tours(new_tour: Tours):
     return conn.execute(tr.select().where(tr.c.id == result.lastrowid)).first()
 
 
-@tours.put("/tours/update/{id}")
+@tours.put("/tours/update/{id}", tags=["Tours"])
 async def update_tour(id: int, edit_tour :Tours):
     conn.execute(
         tr.update().values(
@@ -83,7 +83,7 @@ async def update_tour(id: int, edit_tour :Tours):
 
     return conn.execute(tr.select().where(tr.c.id == id))
 
-@tours.delete("/tours/delete/{id}")
+@tours.delete("/tours/delete/{id}", tags=["Tours"])
 async def delete_tour(id: int):
     res = conn.execute(tr.delete().where(tr.c.id == id))
     if res == None:

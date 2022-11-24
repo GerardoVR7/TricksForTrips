@@ -8,7 +8,7 @@ from ..models.tours_serivices import tours_services
 
 tours_services_router = APIRouter()
 
-@tours_services_router.get("/tours/services")
+@tours_services_router.get("/tours/services", tags=["Tours Services"])
 async def get_all_tours_services():
     return conn.execute(tours_services.select()).fetchall()
 
@@ -22,7 +22,7 @@ async def create_tour_serivce(new_tour_service : ToursServices):
     print(result.lastrowid)
     return conn.execute(tours_services.select().where(tours_services.c.id == result.lastrowid)).first()
 
-@tours_services_router.put("/tours/services/update/{id}")
+@tours_services_router.put("/tours/services/update/{id}", tags=["Tours Services"])
 async def update_tour(id:int, edit_tour_service: ToursServices):
     conn.execute(tours_services.update().values(
         name= edit_tour_service.name
@@ -30,7 +30,7 @@ async def update_tour(id:int, edit_tour_service: ToursServices):
     )
     return conn.execute(tours_services.select().where(tours_services.c.id == id))
 
-@tours_services_router.delete("/tours/serivces/delete/{id}")
+@tours_services_router.delete("/tours/serivces/delete/{id}", tags=["Tours Services"])
 async def delete_tour_service(id:int):
     res = conn.execute(tours_services.delete().where(tours_services.c.id == id))
     if res == None:

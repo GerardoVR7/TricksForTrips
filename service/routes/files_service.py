@@ -5,7 +5,7 @@ import os
 
 files_router = APIRouter()
 
-@files_router.post("/photos/upload", status_code=201)
+@files_router.post("/photos/upload", status_code=201, tags=["S3 Service"])
 async def add_photo(file: UploadFile):
     print("Create endpoint hit!!")
     print(file.filename)
