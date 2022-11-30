@@ -12,7 +12,7 @@ tours = Table(
     Column("place_name", String(100)),
     Column("description", String(255)),
     Column("capacity", Integer),
-    Column("inclued_services", JSON),
+    Column("included_services", JSON),
     Column("start_time", Time),
     Column("return_time", Time),
     Column("interest_points", String(255)),
