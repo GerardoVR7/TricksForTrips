@@ -7,7 +7,7 @@ booking = Table(
     meta,
     Column("id", Integer, primary_key=True, autoincrement=True),
     Column("id_tourist", Integer),
-    Column("id_tour", Integer, ForeignKey("tours.id")),
+    Column("id_tour", Integer),
     Column("id_agency", Integer),
     Column("tourist_name", String(50)),
     Column("date", Date),

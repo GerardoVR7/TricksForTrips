@@ -1,14 +1,11 @@
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from .routes.mexico_cities import mexico_cities_router
-from .routes.tours import tours
-from .routes.files_service import files_router
-
+from .routes.bookings import booking_router
+from .routes.openpay import openpay_router
 app = FastAPI()
 
 origins = [
-
     "*",
 ]
 
@@ -19,9 +16,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-app.include_router(mexico_cities_router)
-app.include_router(tours)
-app.include_router(files_router)
+app.include_router(booking_router)
+app.include_router(openpay_router)
 
 @app.get("/")
 def read_root():
