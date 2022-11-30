@@ -21,11 +21,7 @@ async def get_all_tours():
             detail="Something was wrong with the request"
         )
     if res == None or res == [] or res == {}:
-        return HTTPException(
-            status_code=404,
-            detail="Not exist data",
-            headers={"Error" : "Data empty"}
-        )
+        return Response(status_code=400)
     return res
 
 @tours.get("/tours/random", tags=["Tours"])
