@@ -20,7 +20,7 @@ async def get_all_tours():
             status_code=404,
             detail="Something was wrong with the request"
         )
-    if res == None or res == []:
+    if res == None or res == [] or res == {}:
         return HTTPException(
             status_code=404,
             detail="Not exist data",
@@ -37,7 +37,7 @@ async def get_all_tours():
             status_code=404,
             detail="Something was wrong with the request"
         )
-    if res == None or res == []:
+    if res == None or res == [] or res== {  }:
         return HTTPException(
             status_code=404,
             detail="Not exist data",
