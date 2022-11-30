@@ -72,7 +72,7 @@ async def get_tours_by_agency(id_agency:int):
             status_code=404,
             detail="Something was wrong with the request"
         )
-    if res == None or res == []:
+    if res == None or res == [] or res == {}:
         return HTTPException(
             status_code=404,
             detail="Item not found",
@@ -89,7 +89,7 @@ async def search_by_city(id_city : int):
             status_code=404,
             detail="Something was wrong with the request"
         )
-    if res == None or res == []:
+    if res == None or res == [] or res == {}:
         return HTTPException(
             status_code=404,
             detail="Item not found",
