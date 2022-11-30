@@ -108,7 +108,7 @@ async def create_tours(new_tour: Tours):
     "place_name": new_tour.place_name,
     "description": new_tour.description,
     "capacity": new_tour.capacity,
-    "inclued_services": new_tour.included_services,
+    "included_services": new_tour.included_services,
     "start_time": new_tour.start_time,
     "return_time": new_tour.return_time,
     "interest_points": new_tour.interest_points,
