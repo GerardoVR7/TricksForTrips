@@ -41,11 +41,11 @@ async def get_all_tours():
         )
     return res
 
-@tours.get("/tours/avaliable/{place}/{date}", tags=["Tours"])
-async def get_tours_validity(place : str, date : date):
+@tours.get("/tours/avaliable/{id_city}/{date}", tags=["Tours"])
+async def get_tours_validity(id_city : int, date : date):
     try:
         res = conn.execute(tr.select().where(
-        tr.c.validity_start >= date,  tr.c.validity_start <= date, tr.c.place_name == place)).fetchall()
+        tr.c.validity_start >= date.strftime('%Y-%m-%d'),  tr.c.validity_start <= date.strftime('%Y-%m-%d'), tr.c.id_city == id_city)).fetchall()
     except:
         raise HTTPException(
             status_code=404,
@@ -137,7 +137,7 @@ async def update_tour(id: int, edit_tour :Tours):
                 place_name=  edit_tour.place_name,
                 description=  edit_tour.description,
                 capacity= edit_tour.capacity,
-                inclued_services= edit_tour.included_services,
+                included_services= edit_tour.included_services,
                 start_time= edit_tour.start_time,
                 return_time= edit_tour.return_time,
                 interest_points= edit_tour.interest_points,
