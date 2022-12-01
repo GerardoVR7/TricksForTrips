@@ -11,5 +11,5 @@ class Customer (BaseModel):
     email:str
     requires_account: bool
     phone_number:str
-    address:Dict[str:str] = None
+    address: Dict[str, str] = None
     
