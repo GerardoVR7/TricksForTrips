@@ -1,6 +1,6 @@
 from unittest import result
 from  sqlalchemy.sql.expression import func
-from fastapi import APIRouter, HTTPException, Response, Depends
+from fastapi import APIRouter, Response, Depends
 from ..config.database import conn
 from starlette.status import HTTP_204_NO_CONTENT
 from cryptography.fernet import Fernet
@@ -16,7 +16,7 @@ async def get_all_tours():
     try:
         res = conn.execute(tr.select()).fetchall()
     except:
-        raise HTTPException(
+        raise Response(
             status_code=404,
             detail="Something was wrong with the request"
         )
@@ -29,12 +29,12 @@ async def get_all_tours():
     try:
         res = conn.execute(tr.select().order_by(func.rand())).fetchall()
     except:
-        raise HTTPException(
+        raise Response(
             status_code=404,
             detail="Something was wrong with the request"
         )
     if res == None or res == [] or res== {  }:
-        return HTTPException(
+        return Response(
             status_code=404,
             detail="Not exist data",
             headers={"Error" : "Data empty"}
@@ -47,12 +47,12 @@ async def get_tours_validity(id_city : int, date : date):
         res = conn.execute(tr.select().where(
         tr.c.validity_start >= date.strftime('%Y-%m-%d'),  tr.c.validity_start <= date.strftime('%Y-%m-%d'), tr.c.id_city == id_city)).fetchall()
     except:
-        raise HTTPException(
+        raise Response(
             status_code=404,
             detail="Something was wrong with the request"
         )
     if res == None or res == []:
-        return HTTPException(
+        return Response(
             status_code=404,
             detail="Item not found",
             headers={"Error" : "Data empty"}
@@ -64,12 +64,12 @@ async def get_tours_by_agency(id_agency:int):
     try:
         res = conn.execute(tr.select().where(tr.c.id_agency == id_agency)).fetchall()
     except:
-        raise HTTPException(
+        raise Response(
             status_code=404,
             detail="Something was wrong with the request"
         )
     if res == None or res == [] or res == {}:
-        return HTTPException(
+        return Response(
             status_code=404,
             detail="Item not found",
             headers={"Error" : "Data empty"}
@@ -81,12 +81,12 @@ async def search_by_city(id_city : int):
     try:
         res = conn.execute(tr.select().where(tr.c.id == id_city)).first()
     except:
-        raise HTTPException(
+        raise Response(
             status_code=404,
             detail="Something was wrong with the request"
         )
     if res == None or res == [] or res == {}:
-        return HTTPException(
+        return Response(
             status_code=404,
             detail="Item not found",
             headers={"Error" : "Data empty or out range"}
@@ -120,7 +120,7 @@ async def create_tours(new_tour: Tours):
         result = conn.execute(tr.insert().values(new_tour))
         res = conn.execute(tr.select().where(tr.c.id == result.lastrowid)).first()
     except:
-        raise HTTPException(
+        raise Response(
             status_code=404,
             detail="Something was wrong with the request"
         )
@@ -151,12 +151,12 @@ async def update_tour(id: int, edit_tour :Tours):
             )
         res = conn.execute(tr.select().where(tr.c.id == id)).first()
     except:
-        raise HTTPException(
+        raise Response(
             status_code=404,
             detail="Something was wrong with the request"
         )
     if res == None or res == [] or res == {}:
-        return HTTPException(
+        return Response(
             status_code=404,
             detail="Item not found",
             headers={"Error" : "Data empty or out range"}
@@ -169,11 +169,11 @@ async def delete_tour(id: int):
         conn.execute(tr.delete().where(tr.c.id == id))
         res =  conn.execute(tr.select().where(tr.c.id == id)).first()
     except:
-        raise HTTPException(
+        raise Response(
             status_code=404,
             detail="Something was wrong with the request"
         )
     else:
-        return HTTPException(
+        return Response(
             status_code=204,    
             detail="Object deleted")
