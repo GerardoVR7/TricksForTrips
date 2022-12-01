@@ -15,14 +15,48 @@ async def get_all_bookings():
     try:
         res = conn.execute(booking.select()).fetchall()
     except:
-        raise HTTPException(
+        raise Response(
             status_code=404,
             detail="Something was wrong with the request"
         )
     if res == None or res == []:
-        return HTTPException(
+        return Response(
             status_code=404, 
             detail="Not exist data",
+            headers={"Error" : "Data empty"}
+        )
+    return res
+
+@booking_router.get("/bookings/user/{id}", tags=["Bookings"])
+async def get_bookings_by_user(id:int):
+    try:
+        res = conn.execute(booking.select().where(booking.c.id_tourist == id)).fetchall()
+    except:
+        raise Response(
+            status_code=404,
+            detail="Something was wrong with the request"
+        )
+    if res == None or res == []:
+        return Response(
+            status_code=404,
+            detail="Item not found",
+            headers={"Error" : "Data empty"}
+        )
+    return res
+
+@booking_router.get("/bookings/agency/{id}", tags=["Bookings"])
+async def get_bookings_by_agency(id:int):
+    try:
+        res = conn.execute(booking.select().where(booking.c.id_agency == id)).fetchall()
+    except:
+        raise Response(
+            status_code=404,
+            detail="Something was wrong with the request"
+        )
+    if res == None or res == []:
+        return Response(
+            status_code=404,
+            detail="Item not found",
             headers={"Error" : "Data empty"}
         )
     return res
@@ -48,9 +82,10 @@ async def create_booking(new_booking: Booking):
         result = conn.execute(booking.insert().values(new_booking))
         res = conn.execute(booking.select().where(booking.c.id == result.lastrowid)).first()
     except:
-        raise HTTPException(
+        raise Response(
             status_code=404,
-            detail="Something was wrong with the request"
+            detail="Something was wrong with the request",
+            headers={"Error": "checa el formato kramky, sino esta mal algo en back con los paramaetros"}
         )
     else:
         return res
@@ -75,12 +110,12 @@ async def update_booking(id:int, edit_booking: Booking):
                 booking.select().where(booking.c.id == id)
             ).first()
     except:
-        raise HTTPException(
+        raise Response(
             status_code=404,
             detail="Something was wrong with the request"
         )
     if res == None or res == [] or res == {}:
-        return HTTPException(
+        return Response(
             status_code=404,
             detail="Item not found",
             headers={"Error" : "Data empty or out range"}
@@ -93,11 +128,11 @@ async def delete_booking(id:int):
         conn.execute(booking.delete().where(booking.c.id == id))
         res =  conn.execute(booking.select().where(booking.c.id == id)).first()
     except:
-        raise HTTPException(
+        raise Response(
             status_code=404,
             detail="Something was wrong with the request"
         )
     else:
-        return HTTPException(
+        return Response(
             status_code=204,    
             detail="Object deleted")
