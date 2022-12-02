@@ -150,6 +150,7 @@ async def update_tour(id: int, edit_tour :Tours):
                 ).where(tr.c.id == id)
             )
         res = conn.execute(tr.select().where(tr.c.id == id)).first()
+        print(res)
     except:
         raise Response(
             status_code=404,

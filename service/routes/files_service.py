@@ -7,7 +7,7 @@ from ..auth.auth_bearer import JWTBearer
 
 files_router = APIRouter()
 
-@files_router.post("/photos/upload", status_code=201, tags=["S3 Service"], dependencies=[Depends(JWTBearer())])
+@files_router.post("/photos/upload", status_code=201, tags=["S3 Service"])
 async def add_photo(file: UploadFile):
     print("Create endpoint hit!!")
     print(file.filename)
