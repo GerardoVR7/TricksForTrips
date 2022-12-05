@@ -1,7 +1,7 @@
 from unittest import result
 from  sqlalchemy.sql.expression import func 
 from sqlalchemy import and_
-from fastapi import APIRouter, Response, Depends
+from fastapi import APIRouter, Response, Depends, HTTPException
 from ..config.database import conn
 from starlette.status import HTTP_204_NO_CONTENT
 from cryptography.fernet import Fernet
@@ -47,15 +47,15 @@ async def get_all_tours():
 async def get_tours_validity(id_city : int, date : date):
     try:
 
-        res = conn.execute(tr.select().filter(and_(tr.c.id_city == id_city , tr.c.validity_start > date))).fetchall()
+        res = conn.execute(tr.select().filter(and_(tr.c.id_city == id_city , tr.c.validity_start <= date , tr.c.validity_end >= date))).fetchall()
     except:
-        raise Response(
+        raise HTTPException(
             status_code=404,
-            headers="Something was wrong with the request"
+            detail="Something was wrong with the request"
         )
     if res == None or res == [] or res == {}:
         return Response(
-            status_code=404, content={"message":"ni pedo"}
+            status_code=404, content="algo salio mal papito"
         )
     return res
 
@@ -64,7 +64,7 @@ async def get_tours_by_agency(id_agency:int):
     try:
         res = conn.execute(tr.select().where(tr.c.id_agency == id_agency)).fetchall()
     except:
-        raise Response(
+        raise HTTPException(
             status_code=404,
             content="Something was wrong with the request"
         )
@@ -81,7 +81,7 @@ async def search_by_city(id_city : int):
     try:
         res = conn.execute(tr.select().where(tr.c.id == id_city)).first()
     except:
-        raise Response(
+        raise HTTPException(
             status_code=404,
             content="Something was wrong with the request"
         )
@@ -120,7 +120,7 @@ async def create_tours(new_tour: Tours):
         result = conn.execute(tr.insert().values(new_tour))
         res = conn.execute(tr.select().where(tr.c.id == result.lastrowid)).first()
     except:
-        raise Response(
+        raise HTTPException(
             status_code=404,
             content="Something was wrong with the request"
         )
@@ -152,7 +152,7 @@ async def update_tour(id: int, edit_tour :Tours):
         res = conn.execute(tr.select().where(tr.c.id == id)).first()
         print(res)
     except:
-        raise Response(
+        raise HTTPException(
             status_code=404,
             content="Something was wrong with the request"
         )
@@ -170,7 +170,7 @@ async def delete_tour(id: int):
         conn.execute(tr.delete().where(tr.c.id == id))
         res =  conn.execute(tr.select().where(tr.c.id == id)).first()
     except:
-        raise Response(
+        raise HTTPException(
             status_code=404,
             content="Something was wrong with the request"
         )
