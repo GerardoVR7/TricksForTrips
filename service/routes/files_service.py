@@ -26,7 +26,7 @@ async def add_photo(file: UploadFile):
         uploaded_file_url = f"https://{S3_BUCKET_NAME}.s3.us-west-1.amazonaws.com/{file.filename}"
 
     except:
-        raise HTTPException(
+        raise Response(
             status_code=404,
             detail="Something was wrong with the credentials",
             headers={"Error" : "Keys or upload-file"}

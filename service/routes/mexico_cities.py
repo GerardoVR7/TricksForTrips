@@ -15,12 +15,12 @@ async def get_all_mexico_cities():
     try:
         res = conn.execute(mexico_cities.select()).fetchall()
     except:
-        raise HTTPException(
+        raise Response(
             status_code=404,
             detail="Something was wrong with the request"
         )
     if res == None or res == []:
-        return HTTPException(
+        return Response(
             status_code=404,
             detail="Not exist data",
             headers={"Error" : "Data empty"}
@@ -40,7 +40,7 @@ async def add_new_city(new_city : MexicoCities):
         result = conn.execute(mexico_cities.insert().values(new_city))
         res = conn.execute(mexico_cities.select().where(mexico_cities.c.id == result.lastrowid)).first()
     except:
-        raise HTTPException(
+        raise Response(
             status_code=404,
             detail="Something was wrong with the post"
         )
@@ -59,12 +59,12 @@ async def update_city(id: int, edit_mexico_city: MexicoCities):
         )
         res = conn.execute(mexico_cities.select().where(mexico_cities.c.id == id)).first()
     except:
-        raise HTTPException(
+        raise Response(
             status_code=404,
             detail="Something was wrong with the request"
         )
     if res == None or res == [] or res == {}:
-        return HTTPException(
+        return Response(
             status_code=404,
             detail="Item not found",
             headers={"Error" : "Data empty or out range"}
@@ -76,11 +76,11 @@ async def delete_city(id:int):
     try:
         conn.execute(mexico_cities.delete().where(mexico_cities.c.id == id))
     except:
-        raise HTTPException(
+        raise Response(
             status_code=404,
             detail="Something was wrong with the request"
         )
     else:
-        return HTTPException(
+        return Response(
             status_code=204,
             detail="Object deleted")

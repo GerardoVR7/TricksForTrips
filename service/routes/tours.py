@@ -1,5 +1,6 @@
 from unittest import result
-from  sqlalchemy.sql.expression import func
+from  sqlalchemy.sql.expression import func 
+from sqlalchemy import and_
 from fastapi import APIRouter, Response, Depends
 from ..config.database import conn
 from starlette.status import HTTP_204_NO_CONTENT
@@ -18,7 +19,7 @@ async def get_all_tours():
     except:
         raise Response(
             status_code=404,
-            detail="Something was wrong with the request"
+            content="Something was wrong with the request"
         )
     if res == None or res == [] or res == {}:
         return Response(status_code=400)
@@ -28,15 +29,16 @@ async def get_all_tours():
 async def get_all_tours():
     try:
         res = conn.execute(tr.select().order_by(func.rand())).fetchall()
+        res = res[0:9]
     except:
         raise Response(
             status_code=404,
-            detail="Something was wrong with the request"
+            content="Something was wrong with the request"
         )
-    if res == None or res == [] or res== {  }:
+    if res == None or res == [] or res== {}:
         return Response(
             status_code=404,
-            detail="Not exist data",
+            content="Not exist data",
             headers={"Error" : "Data empty"}
         )
     return res
@@ -44,18 +46,16 @@ async def get_all_tours():
 @tours.get("/tours/avaliable/{id_city}/{date}", tags=["Tours"])
 async def get_tours_validity(id_city : int, date : date):
     try:
-        res = conn.execute(tr.select().where(
-        tr.c.validity_start >= date.strftime('%Y-%m-%d'),  tr.c.validity_start <= date.strftime('%Y-%m-%d'), tr.c.id_city == id_city)).fetchall()
+
+        res = conn.execute(tr.select().filter(and_(tr.c.id_city == id_city , tr.c.validity_start > date))).fetchall()
     except:
         raise Response(
             status_code=404,
-            detail="Something was wrong with the request"
+            headers="Something was wrong with the request"
         )
-    if res == None or res == []:
+    if res == None or res == [] or res == {}:
         return Response(
-            status_code=404,
-            detail="Item not found",
-            headers={"Error" : "Data empty"}
+            status_code=404, content={"message":"ni pedo"}
         )
     return res
 
@@ -66,12 +66,12 @@ async def get_tours_by_agency(id_agency:int):
     except:
         raise Response(
             status_code=404,
-            detail="Something was wrong with the request"
+            content="Something was wrong with the request"
         )
     if res == None or res == [] or res == {}:
         return Response(
             status_code=404,
-            detail="Item not found",
+            content="Item not found",
             headers={"Error" : "Data empty"}
         )
     return res
@@ -83,12 +83,12 @@ async def search_by_city(id_city : int):
     except:
         raise Response(
             status_code=404,
-            detail="Something was wrong with the request"
+            content="Something was wrong with the request"
         )
     if res == None or res == [] or res == {}:
         return Response(
             status_code=404,
-            detail="Item not found",
+            content="Item not found",
             headers={"Error" : "Data empty or out range"}
         )
     return res
@@ -122,7 +122,7 @@ async def create_tours(new_tour: Tours):
     except:
         raise Response(
             status_code=404,
-            detail="Something was wrong with the request"
+            content="Something was wrong with the request"
         )
     else:
         return res
@@ -154,12 +154,12 @@ async def update_tour(id: int, edit_tour :Tours):
     except:
         raise Response(
             status_code=404,
-            detail="Something was wrong with the request"
+            content="Something was wrong with the request"
         )
     if res == None or res == [] or res == {}:
         return Response(
             status_code=404,
-            detail="Item not found",
+            content="Item not found",
             headers={"Error" : "Data empty or out range"}
         )
     return res
@@ -172,9 +172,9 @@ async def delete_tour(id: int):
     except:
         raise Response(
             status_code=404,
-            detail="Something was wrong with the request"
+            content="Something was wrong with the request"
         )
     else:
         return Response(
             status_code=204,    
-            detail="Object deleted")
+            content="Object deleted")
