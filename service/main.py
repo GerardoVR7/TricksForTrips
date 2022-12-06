@@ -4,6 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from .routes.mexico_cities import mexico_cities_router
 from .routes.tours import tours
 from .routes.files_service import files_router
+from .routes.favorites import favorites_router
 
 app = FastAPI()
 
@@ -22,6 +23,7 @@ app.add_middleware(
 app.include_router(mexico_cities_router)
 app.include_router(tours)
 app.include_router(files_router)
+app.include_router(favorites_router)
 
 @app.get("/")
 def read_root():
