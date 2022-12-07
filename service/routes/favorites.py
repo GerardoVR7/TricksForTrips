@@ -42,6 +42,26 @@ async def get_fav_by_user(id:int):
         )
     return res
 
+@favorites_router.post("/favorites/create", tags=["Favs"])
+async def create_tours(new_fav: Favorites):
+
+    new_fav = {
+    "id": new_fav.id,
+    "id_tour": new_fav.id_tour,
+    "id_user": new_fav.id_user
+    }
+
+    try:
+        result = conn.execute(favorites.insert().values(new_fav))
+        res = conn.execute(favorites.select().where(favorites.c.id == result.lastrowid)).first()
+    except:
+        raise HTTPException(
+            status_code=404,
+            content="Something was wrong with the request"
+        )
+    else:
+        return res
+
 @favorites_router.delete("/favorites/delete/{id}", tags=["Favs"])
 async def delete_fav(id: int):
     try:
