@@ -5,6 +5,6 @@ from pydantic import BaseModel
 class Paypal(BaseModel):
     id: Optional[int]
     id_user: int
-    id_paypal: int
+    id_paypal: str
     date: datetime
     total: float

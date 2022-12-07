@@ -6,7 +6,7 @@ paypal = Table(
     "paypal",
     meta,
     Column("id", Integer, primary_key=True, autoincrement=True),
-    Column("id_user", Integer),
+    Column("id_user", String(255)),
     Column("id_paypal", Integer),
     Column("date", DateTime),
     Column("total", Float)
