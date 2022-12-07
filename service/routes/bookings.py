@@ -7,6 +7,7 @@ from datetime import date
 from ..schema.bookings import Booking
 from ..models.bookings import booking
 from ..auth.auth_bearer import JWTBearer
+from sqlalchemy import and_
 
 booking_router = APIRouter()
 
@@ -22,7 +23,7 @@ async def get_all_bookings():
     if res == None or res == []:
         return Response(
             status_code=404, 
-            detail="Not exist data",
+            content="Not exist data",
             headers={"Error" : "Data empty"}
         )
     return res
@@ -34,29 +35,29 @@ async def get_bookings_by_user(id:int):
     except:
         raise Response(
             status_code=404,
-            detail="Something was wrong with the request"
+            content="Something was wrong with the request"
         )
     if res == None or res == []:
         return Response(
             status_code=404,
-            detail="Item not found",
+            content="Item not found",
             headers={"Error" : "Data empty"}
         )
     return res
 
-@booking_router.get("/bookings/agency/{id}", tags=["Bookings"])
-async def get_bookings_by_agency(id:int):
+@booking_router.get("/bookings/agency/{id}/{date}", tags=["Bookings"])
+async def get_bookings_by_agency(id:int, date:date):
     try:
-        res = conn.execute(booking.select().where(booking.c.id_agency == id)).fetchall()
+        res = conn.execute(booking.select().filter(and_(booking.c.id_agency == id , booking.c.date == date))).fetchall()
     except:
         raise Response(
             status_code=404,
-            detail="Something was wrong with the request"
+            content="Something was wrong with the request"
         )
     if res == None or res == []:
         return Response(
             status_code=404,
-            detail="Item not found",
+            content="Item not found",
             headers={"Error" : "Data empty"}
         )
     return res
@@ -75,7 +76,8 @@ async def create_booking(new_booking: Booking):
         "childrens": new_booking.childrens,
         "babys": new_booking.babys,
         "pets": new_booking.pets,
-        "total": new_booking.total
+        "total": new_booking.total,
+        "place_name": new_booking.place_name
     }
 
     try:
@@ -84,7 +86,7 @@ async def create_booking(new_booking: Booking):
     except:
         raise Response(
             status_code=404,
-            detail="Something was wrong with the request",
+            content="Something was wrong with the request",
             headers={"Error": "checa el formato kramky, sino esta mal algo en back con los paramaetros"}
         )
     else:
@@ -103,7 +105,8 @@ async def update_booking(id:int, edit_booking: Booking):
             childrens= edit_booking.childrens,
             babys= edit_booking.babys,
             pets= edit_booking.pets,
-            total= edit_booking.total
+            total= edit_booking.total,
+            place_name= edit_booking.place_name
             ).where(booking.c.id == id)
         )
         res = conn.execute(
@@ -112,12 +115,12 @@ async def update_booking(id:int, edit_booking: Booking):
     except:
         raise Response(
             status_code=404,
-            detail="Something was wrong with the request"
+            content="Something was wrong with the request"
         )
     if res == None or res == [] or res == {}:
         return Response(
             status_code=404,
-            detail="Item not found",
+            content="Item not found",
             headers={"Error" : "Data empty or out range"}
         )
     return res
@@ -130,9 +133,9 @@ async def delete_booking(id:int):
     except:
         raise Response(
             status_code=404,
-            detail="Something was wrong with the request"
+            content="Something was wrong with the request"
         )
     else:
         return Response(
             status_code=204,    
-            detail="Object deleted")
+            content="Object deleted")

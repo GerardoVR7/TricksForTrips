@@ -1,43 +1,65 @@
 from fastapi import APIRouter, Request
-from paypalcheckoutsdk.core import PayPalHttpClient, SandboxEnvironment
 import os
-from paypalcheckoutsdk.orders import OrdersCreateRequest
 from fastapi.responses import JSONResponse
 import requests
+from ..schema.paypal import Paypal
+from ..models.paypal import paypal
+from ..config.database import conn
+from fastapi import APIRouter, HTTPException, Response, Depends
+
 payment_routes = APIRouter()
 
-
-# Creating Access Token for Sandbox
-client_id = os.environ["PAYPAL_CLIENT_ID"]
-client_secret = os.environ["PAYPAL_SECRET"]
-
-# Creating an environment
-environment = SandboxEnvironment(
-    client_id=client_id, client_secret=client_secret)
-client = PayPalHttpClient(environment)
-
-@payment_routes.post("/create-order", tags=["Paypal"])
-async def create_order_paypal(request: Request):
+@payment_routes.get("/payments", tags=["Paypal"])
+async def get_all_payments():
     try:
-        data = await request.json()
-        request = OrdersCreateRequest()
-        print(data)
-        request.prefer('return=representation')
-        request.request_body(
-            {
-                "intent": "CAPTURE",
-                "purchase_units": [
-                    {       
-                        "amount": {
-                            "currency_code": "USD",
-                            "value": "100.00"
-                        }
-                    }
-                ],
-                "items": data
-            }
+        res = conn.execute(paypal.select()).fetchall()
+    except:
+        raise Response(
+            status_code=404,
+            content="Something was wrong with the request"
         )
-        response = client.execute(request)
-        return JSONResponse(content={"id": response.result.id})
-    except IOError:
-        print(IOError)
+    if res == None or res == []:
+        return Response(
+            status_code=404, 
+            content="Not exist data",
+            headers={"Error" : "Data empty"}
+        )
+    return res
+
+@payment_routes.post("/payments/create", tags=["Paypal"])
+async def create_payment(new_payment:Paypal):
+    
+    new_payment = {
+        "id": new_payment.id,
+        "id_user": new_payment.id_user,
+        "id_paypal": new_payment.id_paypal,
+        "date": new_payment.date,
+        "total": new_payment.total
+    }
+
+    try:
+        result = conn.execute(paypal.insert().values(new_payment))
+        res = conn.execute(paypal.select().where(paypal.c.id == result.lastrowid)).first()
+    except:
+        raise Response(
+            status_code=404,
+            content="Something was wrong with the request",
+            headers={"Error": "checa el formato kramky, sino esta mal algo en back con los paramaetros"}
+        )
+    else:
+        return res
+
+@payment_routes.delete("/payments/delete/{id}", tags=["Paypal"])
+async def delete_payment(id:int):
+    try:
+        conn.execute(paypal.delete().where(paypal.c.id == id))
+        res =  conn.execute(paypal.select().where(paypal.c.id == id)).first()
+    except:
+        raise Response(
+            status_code=404,
+            content="Something was wrong with the request"
+        )
+    else:
+        return Response(
+            status_code=204,    
+            content="Object deleted")

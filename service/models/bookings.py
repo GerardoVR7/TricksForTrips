@@ -15,7 +15,8 @@ booking = Table(
     Column("childrens", Integer),
     Column("babys", Integer),
     Column("pets", Integer),
-    Column("total", Float)
+    Column("total", Float),
+    Column("place_name", String(255))
 )
 
 meta.create_all(engine)

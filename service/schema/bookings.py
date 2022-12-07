@@ -14,3 +14,4 @@ class Booking (BaseModel):
     babys: int
     pets: int
     total: float
+    place_name: str
